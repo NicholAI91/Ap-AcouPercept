@@ -1,12 +1,17 @@
-#Technical Report: The AcouPercept Architecture and the Mathematical Reduction of Acoustic Waves to Biological Meaning
+# Technical Report: The AcouPercept Architecture and the Mathematical Reduction of Acoustic Waves to Biological Meaning
 
-#Research By: Nicholas Reid Angell Co-#Assisted By: Google Gemini and Microsoft Copilot
-#Date: September 1, 2026
+# Research By: Nicholas Reid Angell
+
+# Co-Assisted By: Google Gemini and Microsoft Copilot
+
+
+
+# Date: September 1, 2026
 
 #Context and Objective
 This report details the mathematical foundations of acoustic engineering, perceptual audio processing, and the translation of classical physics principles into an identity-driven audio architecture. Traditional audio technology is built around the preservation of physical wave containers or reactive psychoacoustic masking. This research establishes that classical acoustic laws naturally converge toward a compressed hierarchical structure, shifting data processing away from raw waveform preservation and toward biological meaning.
 
-#Mathematical Foundations and Convergence
+# Mathematical Foundations and Convergence
 The development of advanced acoustic systems relies on core physical and signal processing formulas that, when reduced together, reveal an underlying biological spine:
 
 * The Wave Equation: Describes the propagation of sound through a medium via displacement and time parameters.
@@ -25,7 +30,7 @@ When these distinct sound laws are reduced together, they collapse toward three 
 
 3. Perception (L_N): Psychoacoustic scaling determining behavioral relevance and urgency.
 
-#The AcouPercept Metric and Biological Meaning
+# The AcouPercept Metric and Biological Meaning
 
 Multiplying the surviving terms yields a dynamic metric expressed as 2\pi f_1^2 L_N, which carries the dimensional form of \frac{\text{phon}}{s^2}. 
 
@@ -33,7 +38,7 @@ This convergence proves that biological hearing systems and efficient perceptual
 
 This metric underpins both high-impact deterrents (such as "Smart Recall" pet technology utilizing pitch acceleration measured in \frac{\text{rad}}{s^2} to defeat habituation) and advanced identity-driven software codecs.
 
-#Software Implementation: AcouPercept Codec Prototype v0.1
+# Software Implementation: AcouPercept Codec Prototype v0.1
 
 The AcouPercept (AP) architecture replaces traditional time-frequency transforms with an identity-first encoder-decoder pipeline. The prototype implementation executes four core processing stages:
 
@@ -47,7 +52,7 @@ The AcouPercept (AP) architecture replaces traditional time-frequency transforms
 
 The container format (.apc) successfully stores fundamental frequency trajectories, harmonic amplitude profiles, RMS values, and attention fields instead of raw waveform PCM samples.
 
-#Commercial and Industrial Applications
+# Commercial and Industrial Applications
 The transition from static acoustic delivery to dynamic, software-driven DSP creates distinct structural advantages across multiple commercial sectors:
 
 * Perceptual Audio Codecs: Unlike lossless formats (FLAC/ALAC) that treat noise and signal with equal redundancy, or traditional lossy formats (MP3/AAC) that rely on static masking, AcouPercept isolates structural identity to achieve ultra-efficient transmission.
