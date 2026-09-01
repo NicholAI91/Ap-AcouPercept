@@ -1,0 +1,25 @@
+# Identity-Preserving Semantic Codec Framework
+
+The domain-independent form is:
+
+$$
+A(x,t)=\sum_{k=1}^{K} I_k\,R_k\,P_k\,C_k
+$$
+
+where $I$ tracks persistent identity, $R$ tracks change, $P$ assigns relevance, and $C$ incorporates context or prediction. The resulting field controls what gets stored and reconstructed.
+
+- **Images:** preserve objects, contours, textures, and relationships while allocating fewer bits to low-salience regions. Saliency-guided image and video coding already demonstrates attention-based bit allocation.
+- **Video:** track identities and actions through time, storing trajectories and scene changes instead of treating every frame independently.
+- **Text:** preserve entities, claims, relationships, and causal structure while compressing repetition and surface phrasing.
+- **Sensor networks:** retain persistent objects, meaningful state transitions, anomalies, and contextual importance instead of every measurement.
+- **Robotics:** build attention fields over objects, motion, task relevance, and predicted consequences.
+- **Medical signals:** represent recurring physiological structures and clinically relevant deviations as identity trajectories.
+- **Multimodal systems:** align audio, vision, text, and sensor representations around shared identity. Research supports semantic compression through shared multimodal representations and reconstruction of one modality from another. 
+
+The framework generalizes into an **identity-preserving semantic codec**:
+
+$$
+\text{raw data}\rightarrow\text{invariant structures}
+\rightarrow\text{interaction field}\rightarrow\text{attention allocation}
+\rightarrow\text{compact representation}\rightarrow\text{reconstruction}
+$$
