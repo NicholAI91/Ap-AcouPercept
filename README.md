@@ -2,7 +2,7 @@
 
 Researcher: Nicholas Reid Angell
 
-Co-assist: Google Gemini
+Co-assist: Google Gemini (and Microsoft CoPilot in other files in repository)
 
 Date: 08/31/2026
 
