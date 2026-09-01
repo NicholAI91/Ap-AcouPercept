@@ -1,0 +1,118 @@
+"""
+Ap-AcouPercept Framework: Identity-Preserving Semantic Codec
+Author: Nicholas Reid Angell
+Co-assist: Google Gemini
+
+This module implements the core A(x,t) evaluation field:
+    A(x,t) = sum_{k=1}^K (I_k * R_k * P_k * C_k)
+
+It demonstrates how raw data (with noise and distortion) is parsed into 
+invariant structures, filtered through attention gates, and reconstructed 
+based on identity and context rather than brute-force sample preservation.
+"""
+
+class SemanticCodecNode:
+    def __init__(self, entity_id, base_features):
+        self.entity_id = entity_id
+        self.base_features = base_features
+        self.last_state = base_features
+
+    def compute_identity(self, current_signal):
+        """
+        I_k (Identity): Evaluates if the incoming signal matches the persistent entity.
+        Returns a high score if invariant traits match, low for random noise.
+        """
+        # Simplified similarity check for identity persistence
+        match_score = sum(1 for a, b in zip(self.base_features, current_signal) if abs(a - b) < 0.5)
+        return match_score / max(len(self.base_features), 1)
+
+    def compute_change(self, current_signal):
+        """
+        R_k (Change): Tracks spatial or temporal deltas (differential change).
+        """
+        delta = [c - l for c, l in zip(current_signal, self.last_state)]
+        magnitude = sum(abs(d) for d in delta) / len(delta)
+        self.last_state = current_signal
+        return magnitude
+
+    def compute_relevance(self, change_magnitude, threshold=0.1):
+        """
+        P_k (Relevance / Attention Gate): Assigns computational salience.
+        Noise falls below threshold and gets gated out (assigned near-zero relevance).
+        """
+        if change_magnitude < threshold:
+            return 0.05  # Low salience (noise/background)
+        return 1.0       # High salience (meaningful state transition)
+
+    def compute_context(self, current_signal, predicted_signal):
+        """
+        C_k (Context / Prediction): Evaluates residual deviation from anticipated state.
+        Absorbs surface distortion if it matches expected trajectories.
+        """
+        error = sum(abs(c - p) for c, p in zip(current_signal, predicted_signal)) / len(current_signal)
+        # Higher score when deviation is low relative to prediction
+        return max(0.0, 1.0 - error)
+
+
+class IdentitySemanticCodec:
+    def __init__(self):
+        self.nodes = {}
+
+    def register_entity(self, entity_id, features):
+        self.nodes[entity_id] = SemanticCodecNode(entity_id, features)
+
+    def process_field(self, raw_stream, predicted_stream):
+        """
+        Evaluates the domain-independent field A(x,t) across K tracked entities.
+        A(x,t) = sum_{k=1}^K I_k * R_k * P_k * C_k
+        """
+        total_field_activation = 0.0
+        structured_output = {}
+
+        for entity_id, node in self.nodes.items():
+            I = node.compute_identity(raw_stream)
+            R = node.compute_change(raw_stream)
+            P = node.compute_relevance(R)
+            
+            # Use raw stream vs predicted stream for context evaluation
+            C = node.compute_context(raw_stream, predicted_stream)
+
+            # Component evaluation
+            component_score = I * R * P * C
+            total_field_activation += component_score
+
+            structured_output[entity_id] = {
+                "Identity_I": I,
+                "Change_R": R,
+                "Relevance_P": P,
+                "Context_C": C,
+                "Activation": component_score
+            }
+
+        return {
+            "total_field_activation": total_field_activation,
+            "components": structured_output
+        }
+
+
+# --- Execution Simulation ---
+if __name__ == "__main__":
+    print("--- Initializing Ap-AcouPercept Semantic Codec ---")
+    codec = IdentitySemanticCodec()
+
+    # Register a known persistent identity signature (e.g., a target frequency or feature set)
+    codec.register_entity("target_signal_alpha", [1.0, 2.0, 1.5, 2.2])
+
+    # Simulation 1: Clean signal matching the expected identity
+    clean_signal = [1.1, 1.9, 1.6, 2.1]
+    predicted_state = [1.0, 2.0, 1.5, 2.0]
+    
+    result_clean = codec.process_field(clean_signal, predicted_state)
+    print("\n[Test 1] Processing Clean Signal:")
+    print(result_clean)
+
+    # Simulation 2: Random Noise injection (should trigger low Relevance P due to gate filtering)
+    noise_signal = [8.5, 0.1, 9.4, 3.3]
+    result_noise = codec.process_field(noise_signal, predicted_state)
+    print("\n[Test 2] Processing Random Noise (Filtered out by P and I):")
+    print(result_noise)
