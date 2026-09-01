@@ -1,0 +1,15 @@
+This model functions as an identity-preserving semantic codec designed to shift data processing away from brute-force raw waveform or pixel storage and toward structural, attention-gated meaning.
+
+The equation evaluates across K components to determine how information is stored, filtered, and reconstructed:
+
+ * I_k (Identity): Anchors and tracks persistent entities, objects, or core signals over time, ensuring the system focuses bits on what actually exists rather than uniform background noise.
+
+ * R (Change): Tracks spatial or temporal deltas, recording how elements shift, move, or evolve instead of treating every individual frame, sample, or coordinate independently.
+
+ * P (Relevance): Acts as a mathematical attention gate, assigning relevance and routing computational weight dynamically based on salience.
+
+ * C (Context/Prediction): Incorporates predictive modeling and contextual state, compressing data down to the residual deviation from what the system anticipates next.
+
+This field governs a domain-independent pipeline that transforms raw input into efficient, meaning-driven structures:
+
+Whether applied to audio signals, video trajectories, text parsing, or sensor networks, this architecture bypasses traditional codec bloat by mirroring how biological systems selectively process and reconstruct information based on identity and relevance.
