@@ -1,0 +1,68 @@
+Audio Signal Processing and Machine Listening: Mathematical Foundations and Step-by-Step Derivations
+
+Authors: Nicholas Reid Angell, Co-assisted by Google Gemini and Meta Muse
+Date: September 18, 2026
+
+1. Physical Wave Propagation
+Sound originates as a pressure disturbance moving through a medium. This physical propagation is defined by the 3D Wave Equation: 
+\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u
+u: Wave displacement/pressure.
+t: Time.
+c: Speed of sound in the medium.
+\nabla^2: Laplacian operator describing spatial curvature.
+Link: To analyze this continuous physical wave, it must be decomposed into its constituent harmonic frequencies.
+
+2. Frequency Decomposition and Harmonics
+A complex wave is isolated into discrete frequency components via the Fourier Series: 
+f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty} [a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t)]
+\omega_0: Fundamental angular frequency.
+a_n, b_n: Amplitudes of the harmonics.
+These components follow a strict integer multiple relationship defined as the Harmonic Series: 
+f_n = n f_1
+Step: Given f_1 = 200\text{ Hz}, the second harmonic is f_2 = 2(200) = 400\text{ Hz}.
+Resonance occurs when a system is driven at its natural frequency, maximizing amplitude: 
+\omega = \omega_0
+Link: To process these continuous frequencies computationally, the signal must be converted into a discrete digital format without losing frequency information.
+
+3. Digital Sampling and Aliasing Limits
+The Nyquist-Shannon Sampling Theorem dictates the minimum sampling rate (f_s) required to accurately capture a continuous signal with a maximum bandwidth (B): 
+f_s > 2B
+Failure to meet this condition results in aliasing. The frequency at which an undersampled signal appears (f_{\text{alias}}) is calculated by folding it around the Nyquist frequency: 
+f_{\text{alias}} = \vert{}f - k f_s\vert{}
+k: Integer multiple bringing the frequency into the Nyquist range.
+Step-by-Step Aliasing Calculation:
+Sample Rate: f_s = 44,100\text{ Hz}.
+Nyquist Limit: f_N = 44,100 / 2 = 22,050\text{ Hz}.
+Input Signal: f = 30,000\text{ Hz}.
+Condition Check: 30,000 > 22,050 (Aliasing will occur).
+Calculation: f_{\text{alias}} = \vert{}30,000 - 44,100\vert{} = \vert{}-14,100\vert{} = 14,100\text{ Hz}.
+Result: A 30,000 Hz tone folds back as a false 14,100 Hz component.
+Link: While standard digital sampling captures frequency content, it discards temporal location. We require a mathematical method to locate when specific frequencies occur.
+
+4. Time-Frequency Localization
+The Short-Time Fourier Transform (STFT) introduces a sliding window w[n-m] to isolate segments of the discrete signal x[n]: 
+X(m,\omega) = \sum_{n=-\infty}^{\infty} x[n] w[n-m] e^{-j\omega n}
+m: Time position index.
+w: Window function (e.g., Hann or Hamming) applied to reduce spectral leakage at boundaries.
+This operation is strictly bound by the Gabor limit (uncertainty principle for signal processing), enforcing an inverse relationship between time resolution (\Delta t) and frequency resolution (\Delta f): 
+\Delta t \Delta f \gtrsim \text{constant}
+Increasing window length improves \Delta f but degrades \Delta t.
+Decreasing window length improves \Delta t but degrades \Delta f.
+Link: The resulting STFT spectrogram maps absolute acoustic energy, but it does not map to how biological systems interpret those frequencies.
+
+5. Psychoacoustic Scaling
+Human perception is logarithmic, requiring non-linear transformations of the STFT output.
+Loudness: Perceived loudness S (in sones) scales exponentially relative to sound pressure level L_N (in phons): 
+S = 2^{(L_N - 40)/10}
+Step: If L_N increases from 40 to 50 phons: S_1 = 2^{(40-40)/10} = 2^0 = 1 sone. S_2 = 2^{(50-40)/10} = 2^1 = 2 sones. Result: A 10-phon increase results in an exact mathematical doubling of perceived loudness.
+Pitch (Missing Fundamental): The auditory system reconstructs fundamental frequencies based on harmonic spacing, using the greatest common divisor: 
+f_{\text{perceived}} = \gcd(f_n, f_{n+1}, \dots)
+Step: Given isolated tones at 400 Hz, 600 Hz, and 800 Hz. \gcd(400, 600, 800) = 200\text{ Hz}. Result: The perceived pitch is 200 Hz.
+Link: Applying these perceptual rules (e.g., Mel-scale filter banks, log-compression) to the STFT yields Mel-Frequency Cepstral Coefficients (MFCCs) and Mel Spectrograms, which serve as the numerical inputs for machine learning architectures.
+
+6. Sequence Modeling and Attention (Audio AI)
+Audio information is sequentially dependent. Modern processing shifts from local convolutional windows to global contextual relationships via the self-attention mechanism: 
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+Q (Queries), K (Keys), V (Values): Projections of the flattened spectrogram patches.
+d_k: Scaling factor to stabilize gradients.
+This operation computes the dot product of every time-frequency patch against all others, mathematically determining the relevance (weight) of acoustic events regardless of their temporal separation.
